@@ -1,6 +1,5 @@
 ﻿using CoreExcelFileUploadAndRead.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
 
 namespace CoreExcelFileUploadAndRead.Controllers
 {
