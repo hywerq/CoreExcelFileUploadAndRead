@@ -1,0 +1,57 @@
+﻿@model IEnumerable<ExcelFile>
+@{
+}
+
+<br>
+<h2>Upload file</h2>
+
+@if(ViewBag.ErrorMessage != null) 
+{
+	<div class="alert alert-warning alert-dismissible fade show" role="alert">
+		<strong>@ViewBag.ErrorMessage</strong>
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	</div>
+}
+
+@if (ViewBag.SuccessMessage != null)
+{
+	<div class="alert alert-success alert-dismissible fade show" role="alert">
+		<strong>@ViewBag.SuccessMessage</strong>
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	</div>
+}
+
+<form asp-controller="File" asp-action="Index" method="post" enctype="multipart/form-data">
+	<input type="file" name="file"></input>
+	<input type="submit" value="Upload"></input>
+</form>
+
+<br>
+<hr />
+<br>
+
+@if (Model.Count() > 0)
+{
+	<h2>Recently uploaded files</h2>
+	<table class="table">  
+		<thead>
+			<tr>
+				<th>File</th>
+				<th>Upload Time</th>
+				<th>Action</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach(ExcelFile fileInfo in Model)
+			{
+				<tr>
+					<td>@fileInfo.Name</td>
+					<td>@fileInfo.UploadTime</td>
+					<td>
+						<a class="btn btn-primary btn-sm" href="/Print/Index?id=@fileInfo.Id">Show</a>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
