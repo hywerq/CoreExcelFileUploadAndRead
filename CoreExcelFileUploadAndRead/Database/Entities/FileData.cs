@@ -1,7 +1,7 @@
-﻿namespace CoreExcelFileUploadAndRead.Models.Content
+﻿namespace CoreExcelFileUploadAndRead.Database.Entities
 {
-	public class FileData
-	{
+    public class FileData
+    {
         public List<ExcelFile> Files { get; set; } = new();
         public List<Class> Classes { get; set; } = new();
         public List<ClassGroup> ClassGroups { get; set; } = new();

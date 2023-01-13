@@ -1,3 +1,5 @@
+using CoreExcelFileUploadAndRead.Database;
+using CoreExcelFileUploadAndRead.Mapping;
 using CoreExcelFileUploadAndRead.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,7 +9,13 @@ var builder = WebApplication.CreateBuilder(args);
 var dbConnectionString = builder.Configuration["ConnectionStrings:SQLServer"];
 
 builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(dbConnectionString));
+builder.Services.AddDbContext<DatabaseContext>(
+    options => options.UseSqlServer(
+        dbConnectionString,
+        x => x.MigrationsAssembly(typeof(DatabaseContext).Assembly.FullName)));
+builder.Services.AddTransient<ExcelFileUploader>();
+builder.Services.AddAutoMapper(typeof(MapProfile));
+
 
 var app = builder.Build();
 

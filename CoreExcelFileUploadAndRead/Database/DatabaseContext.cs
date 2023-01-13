@@ -1,14 +1,13 @@
-﻿using CoreExcelFileUploadAndRead.Models.Content;
+﻿using CoreExcelFileUploadAndRead.Database.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace CoreExcelFileUploadAndRead.Models
+namespace CoreExcelFileUploadAndRead.Database
 {
     public class DatabaseContext : DbContext
     {
         public DatabaseContext()
         {
-            Database.EnsureDeleted();
-            Database.EnsureCreated();
+
         }
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
