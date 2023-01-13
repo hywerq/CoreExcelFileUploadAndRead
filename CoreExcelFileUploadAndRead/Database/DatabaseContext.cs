@@ -27,13 +27,46 @@ namespace CoreExcelFileUploadAndRead.Database
             {
                 entity.Property(x => x.PeriodStart).HasColumnType("date");
                 entity.Property(x => x.PeriodEnd).HasColumnType("date");
-                entity.Property(u => u.UploadTime).HasDefaultValueSql("GETDATE()");
+                entity.Property(x => x.UploadTime).HasDefaultValueSql("GETDATE()");
+                entity.Property(x => x.OpeningBalanceActive).HasColumnType("decimal(18,2)");
+                entity.Property(x => x.OpeningBalancePassive).HasColumnType("decimal(18,2)");
+                entity.Property(x => x.TurnoverDebit).HasColumnType("decimal(18,2)");
+                entity.Property(x => x.TurnoverCredit).HasColumnType("decimal(18,2)");
+                entity.Property(x => x.ClosingBalanceActive).HasColumnType("decimal(18,2)");
+                entity.Property(x => x.ClosingBalancePassive).HasColumnType("decimal(18,2)");
             });
 
-            modelBuilder.Entity<Class>();
-            modelBuilder.Entity<ClassGroup>();
-            modelBuilder.Entity<BalanceAccount>();
-            modelBuilder.Entity<FileData>().HasNoKey();
+            modelBuilder.Entity<Class>(entity =>
+            {
+                entity.Property(x => x.OpeningBalanceActive).HasColumnType("decimal(18,2)");
+                entity.Property(x => x.OpeningBalancePassive).HasColumnType("decimal(18,2)");
+                entity.Property(x => x.TurnoverDebit).HasColumnType("decimal(18,2)");
+                entity.Property(x => x.TurnoverCredit).HasColumnType("decimal(18,2)");
+                entity.Property(x => x.ClosingBalanceActive).HasColumnType("decimal(18,2)");
+                entity.Property(x => x.ClosingBalancePassive).HasColumnType("decimal(18,2)");
+            });
+
+            modelBuilder.Entity<ClassGroup>(entity =>
+            {
+                entity.Property(x => x.OpeningBalanceActive).HasColumnType("decimal(18,2)");
+                entity.Property(x => x.OpeningBalancePassive).HasColumnType("decimal(18,2)");
+                entity.Property(x => x.TurnoverDebit).HasColumnType("decimal(18,2)");
+                entity.Property(x => x.TurnoverCredit).HasColumnType("decimal(18,2)");
+                entity.Property(x => x.ClosingBalanceActive).HasColumnType("decimal(18,2)");
+                entity.Property(x => x.ClosingBalancePassive).HasColumnType("decimal(18,2)");
+            });
+
+            modelBuilder.Entity<BalanceAccount>(entity =>
+            {
+                entity.Property(x => x.OpeningBalanceActive).HasColumnType("decimal(18,2)");
+                entity.Property(x => x.OpeningBalancePassive).HasColumnType("decimal(18,2)");
+                entity.Property(x => x.TurnoverDebit).HasColumnType("decimal(18,2)");
+                entity.Property(x => x.TurnoverCredit).HasColumnType("decimal(18,2)");
+                entity.Property(x => x.ClosingBalanceActive).HasColumnType("decimal(18,2)");
+                entity.Property(x => x.ClosingBalancePassive).HasColumnType("decimal(18,2)");
+            });
+
+            modelBuilder.Entity<FileData>();
         }
     }
 }
