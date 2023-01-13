@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CoreExcelFileUploadAndRead.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230113022622_InitMigration")]
+    [Migration("20230113173804_InitMigration")]
     partial class InitMigration
     {
         /// <inheritdoc />
@@ -195,6 +195,12 @@ namespace CoreExcelFileUploadAndRead.Migrations
 
             modelBuilder.Entity("CoreExcelFileUploadAndRead.Database.Entities.FileData", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
                     b.Property<int>("BalanceAccountId")
                         .HasColumnType("int");
 
@@ -204,8 +210,10 @@ namespace CoreExcelFileUploadAndRead.Migrations
                     b.Property<int>("ClassId")
                         .HasColumnType("int");
 
-                    b.Property<int>("FileId")
+                    b.Property<int>("ExcelFileId")
                         .HasColumnType("int");
+
+                    b.HasKey("Id");
 
                     b.ToTable("FileDatas");
                 });

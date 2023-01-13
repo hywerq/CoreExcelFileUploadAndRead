@@ -1,13 +1,28 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CoreExcelFileUploadAndRead.Database.Entities;
+using CoreExcelFileUploadAndRead.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CoreExcelFileUploadAndRead.Controllers
 {
     public class PrintController : Controller
     {
-        [HttpGet]
-        public IActionResult Index()
+        private ExcelFileLoader fileLoader;
+
+        private List<ExcelFile> Files { get; }
+
+        public PrintController(ExcelFileLoader fileUploader)
         {
-            string id = Request.Query["id"];
+            this.fileLoader = fileUploader;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            int.TryParse(Request.Query["id"], out int fileID);
+
+            ViewBag.File = await fileLoader.LoadFileInfoAsync(fileID);
+            ViewBag.Classes = await fileLoader.LoadFileClassesAsync(fileID);
+            ViewBag.ClassGroups = await fileLoader.LoadFileClassGroupsAsync(fileID);
 
             return View();
         }

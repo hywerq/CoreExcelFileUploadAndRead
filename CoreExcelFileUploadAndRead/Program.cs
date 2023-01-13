@@ -14,6 +14,7 @@ builder.Services.AddDbContext<DatabaseContext>(
         dbConnectionString,
         x => x.MigrationsAssembly(typeof(DatabaseContext).Assembly.FullName)));
 builder.Services.AddTransient<ExcelFileUploader>();
+builder.Services.AddTransient<ExcelFileLoader>();
 builder.Services.AddAutoMapper(typeof(MapProfile));
 
 

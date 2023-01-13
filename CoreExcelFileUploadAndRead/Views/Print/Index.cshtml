@@ -1,5 +1,4 @@
-﻿@model IEnumerable<CoreExcelFileUploadAndRead.Database.Entities.FileData>
-@{
+﻿@{
 }
 
 @if (ViewBag.ErrorMessage != null)
@@ -29,7 +28,36 @@
 	</thead>
 	<tbody>
 		@{
+			int counter = 0;
 
+			for (int i = 0; i < ViewBag.Classes.Count; i++)
+			{
+				<tr>
+					<th colspan="7">@ViewBag.Classes[i].Title</th>
+				</tr>
+
+
+
+				<tr class="total">
+					<td>ПО КЛАССУ</td>
+					<td>@ViewBag.Classes[i].OpeningBalanceActive</td>
+					<td>@ViewBag.Classes[i].OpeningBalancePassive</td>
+					<td>@ViewBag.Classes[i].TurnoverDebit</td>
+					<td>@ViewBag.Classes[i].TurnoverCredit</td>
+					<td>@ViewBag.Classes[i].ClosingBalanceActive</td>
+					<td>@ViewBag.Classes[i].ClosingBalancePassive</td>
+				</tr>
+			}
+
+			<tr class="total">
+				<td>БАЛАНС</td>
+				<td>@ViewBag.File.OpeningBalanceActive</td>
+				<td>@ViewBag.File.OpeningBalancePassive</td>
+				<td>@ViewBag.File.TurnoverDebit</td>
+				<td>@ViewBag.File.TurnoverCredit</td>
+				<td>@ViewBag.File.ClosingBalanceActive</td>
+				<td>@ViewBag.File.ClosingBalancePassive</td>
+			</tr>
 		}
 	</tbody>
 </table>

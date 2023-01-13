@@ -66,7 +66,7 @@ namespace CoreExcelFileUploadAndRead.Database
                 entity.Property(x => x.ClosingBalancePassive).HasColumnType("decimal(18,2)");
             });
 
-            modelBuilder.Entity<FileData>().HasNoKey();
+            modelBuilder.Entity<FileData>();
         }
     }
 }
