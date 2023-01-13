@@ -1,28 +1,28 @@
-﻿using CoreExcelFileUploadAndRead.Models;
+﻿using CoreExcelFileUploadAndRead.Database;
+using CoreExcelFileUploadAndRead.Database.Entities;
+using CoreExcelFileUploadAndRead.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoreExcelFileUploadAndRead.Controllers
 {
     public class FileController : Controller
     {
-        private readonly DatabaseContext databaseContext;
-        private List<ExcelFile> uploadedFilesList = new List<ExcelFile>();
+        private ExcelFileUploader fileUploader; 
 
-        public FileController(DatabaseContext databaseContext)
+        private List<ExcelFile> Files { get; set; }
+
+        public FileController(ExcelFileUploader fileUploader)
         {
-            this.databaseContext = databaseContext;
+            this.fileUploader = fileUploader;
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            uploadedFilesList = LoadUploadedFilesList();
+            Files = await fileUploader.LoadUploadedFilesListAsync();
 
-            return View(uploadedFilesList);
+            return View(Files);
         }
-
-        [BindProperty]
-        public ExcelFile File { get; set; }
 
         [HttpPost]
         public async Task<IActionResult> Index([FromForm] IFormFile file, [FromServices] IWebHostEnvironment hostingEnvironment)
@@ -36,10 +36,7 @@ namespace CoreExcelFileUploadAndRead.Controllers
                     fileStream.Flush();
                 }
 
-                File.Name = file.FileName;
-
-                databaseContext.Files.Add(File);
-                await databaseContext.SaveChangesAsync();
+                await fileUploader.GetExcelFileDataAsync(file.FileName);
 
                 ViewBag.SuccessMessage = "Added successfully";
             }
@@ -49,26 +46,10 @@ namespace CoreExcelFileUploadAndRead.Controllers
             }
             finally
             {
-                uploadedFilesList = LoadUploadedFilesList();
+                Files = await fileUploader.LoadUploadedFilesListAsync();
             }
 
-            return View(uploadedFilesList);
-        }
-
-        private List<ExcelFile> LoadUploadedFilesList()
-        {
-            List<ExcelFile> files = new List<ExcelFile>();
-
-            try
-            {
-                files = databaseContext.Files.ToList();
-            }
-            catch (Exception ex)
-            {
-                ViewBag.ErrorMessage = "Error: " + ex.Message;
-            }
-
-            return files;
+            return View(Files);
         }
     }
 }

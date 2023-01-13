@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ExcelFile>
+﻿@model IEnumerable<CoreExcelFileUploadAndRead.Database.Entities.ExcelFile>
 @{
 }
 
@@ -42,7 +42,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			@foreach(ExcelFile fileInfo in Model)
+			@foreach (CoreExcelFileUploadAndRead.Database.Entities.ExcelFile fileInfo in Model)
 			{
 				<tr>
 					<td>@fileInfo.Name</td>

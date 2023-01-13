@@ -1,7 +1,7 @@
-﻿namespace CoreExcelFileUploadAndRead.Models
+﻿namespace CoreExcelFileUploadAndRead.Database.Entities
 {
-	public class ExcelFile
-	{
+    public class ExcelFile
+    {
         public int Id { get; set; }
         public string Name { get; set; } = "";
         public string Title { get; set; } = "";
@@ -10,7 +10,7 @@
         public string Currency { get; set; } = "";
         public DateTime PrintTime { get; set; }
         public DateTime UploadTime { get; set; }
-        public DateTime PeriodStart { get; set; } 
+        public DateTime PeriodStart { get; set; }
         public DateTime PeriodEnd { get; set; }
         public decimal OpeningBalanceActive { get; set; }
         public decimal OpeningBalancePassive { get; set; }
