@@ -2,9 +2,9 @@
 {
     public class FileData
     {
-        public List<ExcelFile> Files { get; set; } = new();
-        public List<Class> Classes { get; set; } = new();
-        public List<ClassGroup> ClassGroups { get; set; } = new();
-        public List<BalanceAccount> BalanceAccounts { get; set; } = new();
+        public int FileId { get; set; }
+        public int ClassId { get; set; }
+        public int ClassGroupId { get; set; }
+        public int BalanceAccountId { get; set; }
     }
 }

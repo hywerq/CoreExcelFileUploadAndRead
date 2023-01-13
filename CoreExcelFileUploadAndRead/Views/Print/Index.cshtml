@@ -1,0 +1,35 @@
+﻿@model IEnumerable<CoreExcelFileUploadAndRead.Database.Entities.FileData>
+@{
+}
+
+@if (ViewBag.ErrorMessage != null)
+{
+		<div class="alert alert-warning alert-dismissible fade show" role="alert">
+			<strong>@ViewBag.ErrorMessage</strong>
+			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		</div>
+}
+
+<table class="table" border="1" id="file">  
+	<thead>
+		<tr>
+			<th rowspan="2">Б/сч</th>
+			<th colspan="2">Входящее сальдо</th>
+			<th colspan="2">Обороты</th>
+			<th colspan="2">Исходящее сальдо</th>
+		</tr>
+		<tr>
+			<th>Актив</th>
+			<th>Пассив</th>
+			<th>Дебет</th>
+			<th>Кредит</th>
+			<th>Актив</th>
+			<th>Пассив</th>
+		</tr>
+	</thead>
+	<tbody>
+		@{
+
+		}
+	</tbody>
+</table>

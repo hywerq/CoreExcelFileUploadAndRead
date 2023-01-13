@@ -177,6 +177,14 @@ namespace CoreExcelFileUploadAndRead.Models
 
             databaseContext.BalanceAccounts.Add(balance);
             await databaseContext.SaveChangesAsync();
+
+            databaseContext.FileDatas.Add(new FileData() 
+            { 
+                BalanceAccountId = balance.Id, 
+                ClassId = currentClassID,
+                FileId = currentFileID
+            });
+            await databaseContext.SaveChangesAsync();
         }
     }
 }
