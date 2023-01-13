@@ -1,7 +1,7 @@
-﻿namespace CoreExcelFileUploadAndRead.Models.Content
+﻿namespace CoreExcelFileUploadAndRead.Database.Entities
 {
-	public class BalanceAccount
-	{
+    public class BalanceAccount
+    {
         public int Id { get; set; }
         public int Number { get; set; }
         public decimal OpeningBalanceActive { get; set; }

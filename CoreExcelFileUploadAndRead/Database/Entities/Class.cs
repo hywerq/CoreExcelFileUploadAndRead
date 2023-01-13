@@ -1,9 +1,9 @@
-﻿namespace CoreExcelFileUploadAndRead.Models.Content
+﻿namespace CoreExcelFileUploadAndRead.Database.Entities
 {
-	public class ClassGroup
-	{
+    public class Class
+    {
         public int Id { get; set; }
-        public int Number { get; set; }
+        public string Title { get; set; } = "";
         public decimal OpeningBalanceActive { get; set; }
         public decimal OpeningBalancePassive { get; set; }
         public decimal TurnoverDebit { get; set; }
