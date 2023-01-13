@@ -8,12 +8,10 @@ namespace CoreExcelFileUploadAndRead.Models
     public class ExcelFileLoader
     {
         private DatabaseContext databaseContext;
-        private IMapper mapper;
 
-        public ExcelFileLoader(DatabaseContext databaseContext, IMapper mapper)
+        public ExcelFileLoader(DatabaseContext databaseContext)
         {
             this.databaseContext = databaseContext;
-            this.mapper = mapper;
         }
 
         public async Task<ExcelFile> LoadFileInfoAsync(int fileID)
@@ -40,11 +38,24 @@ namespace CoreExcelFileUploadAndRead.Models
                 .Join(
                     databaseContext.FileDatas,
                     cgs => cgs.Id,
-                    fds => fds.ClassId,
+                    fds => fds.ClassGroupId,
                     (cgs, fds) => cgs
                 ).Distinct().ToListAsync();
 
             return classGroups;
+        }
+
+        public async Task<List<BalanceAccount>> LoadFileBalanceAccountsAsync(int fileID)
+        {
+            List<BalanceAccount> balanceAccounts = await databaseContext.BalanceAccounts
+                .Join(
+                    databaseContext.FileDatas,
+                    bas => bas.Id,
+                    fds => fds.BalanceAccountId,
+                    (bas, fds) => bas
+                ).ToListAsync();
+
+            return balanceAccounts;
         }
     }
 }

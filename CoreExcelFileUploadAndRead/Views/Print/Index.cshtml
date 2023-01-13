@@ -36,7 +36,27 @@
 					<th colspan="7">@ViewBag.Classes[i].Title</th>
 				</tr>
 
+				while (counter < ViewBag.BalanceAccounts.Count)
+				{
+					int firstDigit = (int)Math.Abs(ViewBag.BalanceAccounts[counter].Number / 1000 % 10);
 
+					if ((i + 1) != firstDigit)
+					{
+						break;
+					}
+
+					<tr>
+						<td>@ViewBag.BalanceAccounts[counter].Number</td>
+						<td>@ViewBag.BalanceAccounts[counter].OpeningBalanceActive</td>
+						<td>@ViewBag.BalanceAccounts[counter].OpeningBalancePassive</td>
+						<td>@ViewBag.BalanceAccounts[counter].TurnoverDebit</td>
+						<td>@ViewBag.BalanceAccounts[counter].TurnoverCredit</td>
+						<td>@ViewBag.BalanceAccounts[counter].ClosingBalanceActive</td>
+						<td>@ViewBag.BalanceAccounts[counter].ClosingBalancePassive</td>
+					</tr>
+
+					counter++;
+				}
 
 				<tr class="total">
 					<td>ПО КЛАССУ</td>

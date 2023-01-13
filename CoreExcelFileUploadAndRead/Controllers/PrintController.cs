@@ -23,6 +23,7 @@ namespace CoreExcelFileUploadAndRead.Controllers
             ViewBag.File = await fileLoader.LoadFileInfoAsync(fileID);
             ViewBag.Classes = await fileLoader.LoadFileClassesAsync(fileID);
             ViewBag.ClassGroups = await fileLoader.LoadFileClassGroupsAsync(fileID);
+            ViewBag.BalanceAccounts = await fileLoader.LoadFileBalanceAccountsAsync(fileID);
 
             return View();
         }
