@@ -131,6 +131,14 @@ namespace CoreExcelFileUploadAndRead.Models
 
             databaseContext.ClassGroups.Add(classGroup);
             await databaseContext.SaveChangesAsync();
+
+            (
+                from fd in databaseContext.FileDatas
+                join ba in databaseContext.BalanceAccounts on fd.BalanceAccountId equals ba.Id
+                where ba.Number.ToString().Substring(0, 2) == classGroup.Number.ToString().Substring(0, 2)
+                select fd
+            ).ToList()
+            .ForEach(x => x.ClassGroupId = classGroup.Id);
         }
 
         public async Task<int> AddClassAsync(IExcelDataReader reader)

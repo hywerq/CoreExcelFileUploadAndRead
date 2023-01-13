@@ -9,6 +9,27 @@
 		</div>
 }
 
+<table class="header-table">
+	<tr>
+		<td>@ViewBag.File.BankName</td>
+	</tr>
+	<tr class="title">
+		<td colspan="7">@ViewBag.File.Title</td>
+	</tr>
+	<tr class="title">
+		<td colspan="7">за период с @ViewBag.File.PeriodStart по @ViewBag.File.PeriodEnd</td>
+	</tr>
+	<tr class="title">
+		<td colspan="7">@ViewBag.File.Subject</td>
+	</tr>
+	<tr></tr>
+	<tr>
+		<td>@ViewBag.File.PrintTime</td>
+		<td colspan="5"></td>
+		<td>@ViewBag.File.Currency</td>
+	</tr>
+</table>
+
 <table class="table" border="1" id="file">  
 	<thead>
 		<tr>
@@ -28,7 +49,11 @@
 	</thead>
 	<tbody>
 		@{
-			int counter = 0;
+			int balanceAccountCounter = 0;
+			int classGroupCounter = 0;
+
+			int firstDigit = 0;
+			int secondDigit = 0;
 
 			for (int i = 0; i < ViewBag.Classes.Count; i++)
 			{
@@ -36,26 +61,45 @@
 					<th colspan="7">@ViewBag.Classes[i].Title</th>
 				</tr>
 
-				while (counter < ViewBag.BalanceAccounts.Count)
+				firstDigit = (int)Math.Abs(ViewBag.BalanceAccounts[balanceAccountCounter].Number / 1000 % 10);
+				secondDigit = (int)Math.Abs(ViewBag.BalanceAccounts[balanceAccountCounter].Number / 100 % 10);
+
+				while (balanceAccountCounter < ViewBag.BalanceAccounts.Count)
 				{
-					int firstDigit = (int)Math.Abs(ViewBag.BalanceAccounts[counter].Number / 1000 % 10);
+					firstDigit = (int)Math.Abs(ViewBag.BalanceAccounts[balanceAccountCounter].Number / 1000 % 10);
 
 					if ((i + 1) != firstDigit)
 					{
 						break;
 					}
 
+					if (secondDigit != (int)Math.Abs(ViewBag.BalanceAccounts[balanceAccountCounter].Number / 100 % 10))
+					{
+						<tr class="total">
+							<td>@ViewBag.ClassGroups[classGroupCounter].Number</td>
+							<td>@ViewBag.ClassGroups[classGroupCounter].OpeningBalanceActive</td>
+							<td>@ViewBag.ClassGroups[classGroupCounter].OpeningBalancePassive</td>
+							<td>@ViewBag.ClassGroups[classGroupCounter].TurnoverDebit</td>
+							<td>@ViewBag.ClassGroups[classGroupCounter].TurnoverCredit</td>
+							<td>@ViewBag.ClassGroups[classGroupCounter].ClosingBalanceActive</td>
+							<td>@ViewBag.ClassGroups[classGroupCounter].ClosingBalancePassive</td>
+						</tr> 
+
+						classGroupCounter++;
+					}
+
 					<tr>
-						<td>@ViewBag.BalanceAccounts[counter].Number</td>
-						<td>@ViewBag.BalanceAccounts[counter].OpeningBalanceActive</td>
-						<td>@ViewBag.BalanceAccounts[counter].OpeningBalancePassive</td>
-						<td>@ViewBag.BalanceAccounts[counter].TurnoverDebit</td>
-						<td>@ViewBag.BalanceAccounts[counter].TurnoverCredit</td>
-						<td>@ViewBag.BalanceAccounts[counter].ClosingBalanceActive</td>
-						<td>@ViewBag.BalanceAccounts[counter].ClosingBalancePassive</td>
+						<td>@ViewBag.BalanceAccounts[balanceAccountCounter].Number</td>
+						<td>@ViewBag.BalanceAccounts[balanceAccountCounter].OpeningBalanceActive</td>
+						<td>@ViewBag.BalanceAccounts[balanceAccountCounter].OpeningBalancePassive</td>
+						<td>@ViewBag.BalanceAccounts[balanceAccountCounter].TurnoverDebit</td>
+						<td>@ViewBag.BalanceAccounts[balanceAccountCounter].TurnoverCredit</td>
+						<td>@ViewBag.BalanceAccounts[balanceAccountCounter].ClosingBalanceActive</td>
+						<td>@ViewBag.BalanceAccounts[balanceAccountCounter].ClosingBalancePassive</td>
 					</tr>
 
-					counter++;
+					secondDigit = (int)Math.Abs(ViewBag.BalanceAccounts[balanceAccountCounter].Number / 100 % 10);
+					balanceAccountCounter++;
 				}
 
 				<tr class="total">

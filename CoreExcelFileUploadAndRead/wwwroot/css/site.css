@@ -17,6 +17,15 @@ body {
   margin-bottom: 60px;
 }
 
+.header-table{
+    width: 100%;
+}
+
+.title {
+    text-align: center;
+    font-weight: bold;
+}
+
 #file th {
     text-align: center;
 }

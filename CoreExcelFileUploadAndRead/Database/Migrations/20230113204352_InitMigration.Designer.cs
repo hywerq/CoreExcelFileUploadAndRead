@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CoreExcelFileUploadAndRead.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230113173804_InitMigration")]
+    [Migration("20230113204352_InitMigration")]
     partial class InitMigration
     {
         /// <inheritdoc />

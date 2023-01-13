@@ -27,7 +27,9 @@ namespace CoreExcelFileUploadAndRead.Models
                     cls => cls.Id,
                     fds => fds.ClassId,
                     (cls, fds) => cls
-                ).Distinct().ToListAsync();
+                ).Distinct()
+                .OrderBy(x => x.Title)
+                .ToListAsync();
 
             return classes;
         }
@@ -40,7 +42,9 @@ namespace CoreExcelFileUploadAndRead.Models
                     cgs => cgs.Id,
                     fds => fds.ClassGroupId,
                     (cgs, fds) => cgs
-                ).Distinct().ToListAsync();
+                ).Distinct()
+                .OrderBy(x => x.Number)
+                .ToListAsync();
 
             return classGroups;
         }
@@ -53,7 +57,8 @@ namespace CoreExcelFileUploadAndRead.Models
                     bas => bas.Id,
                     fds => fds.BalanceAccountId,
                     (bas, fds) => bas
-                ).ToListAsync();
+                ).OrderBy(x => x.Number)
+                .ToListAsync();
 
             return balanceAccounts;
         }
