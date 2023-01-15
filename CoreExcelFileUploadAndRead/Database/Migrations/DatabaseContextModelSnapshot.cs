@@ -198,21 +198,79 @@ namespace CoreExcelFileUploadAndRead.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("BalanceAccountId")
+                    b.Property<int?>("BalanceAccountId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ClassGroupId")
+                    b.Property<int?>("ClassGroupId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ClassId")
+                    b.Property<int?>("ClassId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ExcelFileId")
+                    b.Property<int?>("ExcelFileId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BalanceAccountId")
+                        .IsUnique()
+                        .HasFilter("[BalanceAccountId] IS NOT NULL");
+
+                    b.HasIndex("ClassGroupId");
+
+                    b.HasIndex("ClassId");
+
+                    b.HasIndex("ExcelFileId");
+
                     b.ToTable("FileDatas");
+                });
+
+            modelBuilder.Entity("CoreExcelFileUploadAndRead.Database.Entities.FileData", b =>
+                {
+                    b.HasOne("CoreExcelFileUploadAndRead.Database.Entities.BalanceAccount", "BalanceAccount")
+                        .WithOne("FileData")
+                        .HasForeignKey("CoreExcelFileUploadAndRead.Database.Entities.FileData", "BalanceAccountId");
+
+                    b.HasOne("CoreExcelFileUploadAndRead.Database.Entities.ClassGroup", "ClassGroup")
+                        .WithMany("FileDatas")
+                        .HasForeignKey("ClassGroupId");
+
+                    b.HasOne("CoreExcelFileUploadAndRead.Database.Entities.Class", "Class")
+                        .WithMany("FileDatas")
+                        .HasForeignKey("ClassId");
+
+                    b.HasOne("CoreExcelFileUploadAndRead.Database.Entities.ExcelFile", "ExcelFile")
+                        .WithMany("FileDatas")
+                        .HasForeignKey("ExcelFileId");
+
+                    b.Navigation("BalanceAccount");
+
+                    b.Navigation("Class");
+
+                    b.Navigation("ClassGroup");
+
+                    b.Navigation("ExcelFile");
+                });
+
+            modelBuilder.Entity("CoreExcelFileUploadAndRead.Database.Entities.BalanceAccount", b =>
+                {
+                    b.Navigation("FileData")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CoreExcelFileUploadAndRead.Database.Entities.Class", b =>
+                {
+                    b.Navigation("FileDatas");
+                });
+
+            modelBuilder.Entity("CoreExcelFileUploadAndRead.Database.Entities.ClassGroup", b =>
+                {
+                    b.Navigation("FileDatas");
+                });
+
+            modelBuilder.Entity("CoreExcelFileUploadAndRead.Database.Entities.ExcelFile", b =>
+                {
+                    b.Navigation("FileDatas");
                 });
 #pragma warning restore 612, 618
         }

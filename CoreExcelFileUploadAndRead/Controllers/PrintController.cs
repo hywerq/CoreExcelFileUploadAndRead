@@ -1,5 +1,5 @@
 ﻿using CoreExcelFileUploadAndRead.Database.Entities;
-using CoreExcelFileUploadAndRead.Models;
+using CoreExcelFileUploadAndRead.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoreExcelFileUploadAndRead.Controllers
@@ -10,9 +10,9 @@ namespace CoreExcelFileUploadAndRead.Controllers
 
         private List<ExcelFile> Files { get; }
 
-        public PrintController(ExcelFileLoader fileUploader)
+        public PrintController(ExcelFileLoader fileLoader)
         {
-            this.fileLoader = fileUploader;
+            this.fileLoader = fileLoader;
         }
 
         [HttpGet]

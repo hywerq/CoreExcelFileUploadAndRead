@@ -17,7 +17,7 @@
 		<td colspan="7">@ViewBag.File.Title</td>
 	</tr>
 	<tr class="title">
-		<td colspan="7">за период с @ViewBag.File.PeriodStart по @ViewBag.File.PeriodEnd</td>
+		<td colspan="7">за период с @ViewBag.File.PeriodStart.ToString("dd.MM.yyyy") по @ViewBag.File.PeriodEnd.ToString("dd.MM.yyyy")</td>
 	</tr>
 	<tr class="title">
 		<td colspan="7">@ViewBag.File.Subject</td>
@@ -66,13 +66,6 @@
 
 				while (balanceAccountCounter < ViewBag.BalanceAccounts.Count)
 				{
-					firstDigit = (int)Math.Abs(ViewBag.BalanceAccounts[balanceAccountCounter].Number / 1000 % 10);
-
-					if ((i + 1) != firstDigit)
-					{
-						break;
-					}
-
 					if (secondDigit != (int)Math.Abs(ViewBag.BalanceAccounts[balanceAccountCounter].Number / 100 % 10))
 					{
 						<tr class="total">
@@ -88,6 +81,13 @@
 						classGroupCounter++;
 					}
 
+					firstDigit = (int)Math.Abs(ViewBag.BalanceAccounts[balanceAccountCounter].Number / 1000 % 10);
+
+					if ((i + 1) != firstDigit)
+					{
+						break;
+					}
+
 					<tr>
 						<td>@ViewBag.BalanceAccounts[balanceAccountCounter].Number</td>
 						<td>@ViewBag.BalanceAccounts[balanceAccountCounter].OpeningBalanceActive</td>
@@ -100,6 +100,19 @@
 
 					secondDigit = (int)Math.Abs(ViewBag.BalanceAccounts[balanceAccountCounter].Number / 100 % 10);
 					balanceAccountCounter++;
+				}
+
+				if((classGroupCounter + 1) == ViewBag.ClassGroups.Count)
+				{
+					<tr class="total">
+						<td>@ViewBag.ClassGroups[classGroupCounter].Number</td>
+						<td>@ViewBag.ClassGroups[classGroupCounter].OpeningBalanceActive</td>
+						<td>@ViewBag.ClassGroups[classGroupCounter].OpeningBalancePassive</td>
+						<td>@ViewBag.ClassGroups[classGroupCounter].TurnoverDebit</td>
+						<td>@ViewBag.ClassGroups[classGroupCounter].TurnoverCredit</td>
+						<td>@ViewBag.ClassGroups[classGroupCounter].ClosingBalanceActive</td>
+						<td>@ViewBag.ClassGroups[classGroupCounter].ClosingBalancePassive</td>
+					</tr> 
 				}
 
 				<tr class="total">
