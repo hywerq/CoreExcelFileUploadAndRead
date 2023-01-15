@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using CoreExcelFileUploadAndRead.Database.Entities;
 using ExcelDataReader;
-using System.Reflection.PortableExecutable;
 
 namespace CoreExcelFileUploadAndRead.Mapping
 {

@@ -6,21 +6,21 @@ namespace CoreExcelFileUploadAndRead.Services
 {
     public class ExcelFileLoader
     {
-        private DatabaseContext databaseContext;
+        private readonly DatabaseContext _databaseContext;
 
         public ExcelFileLoader(DatabaseContext databaseContext)
         {
-            this.databaseContext = databaseContext;
+            _databaseContext = databaseContext;
         }
 
         public async Task<ExcelFile?> LoadFileInfoAsync(int fileID)
         {
-            return await databaseContext.Files.FindAsync(fileID);
+            return await _databaseContext.Files.FindAsync(fileID);
         }
 
         public async Task<List<Class>> LoadFileClassesAsync(int fileID)
         {
-            List<Class> classes = await databaseContext.Classes
+            List<Class> classes = await _databaseContext.Classes
                 .Include(x => x.FileDatas)
                 .Where(x => x.FileDatas.First().ExcelFileId == fileID)
                 .OrderBy(x => x.Title)
@@ -31,7 +31,7 @@ namespace CoreExcelFileUploadAndRead.Services
 
         public async Task<List<ClassGroup>> LoadFileClassGroupsAsync(int fileID)
         {
-            List<ClassGroup> classGroups = await databaseContext.ClassGroups
+            List<ClassGroup> classGroups = await _databaseContext.ClassGroups
                 .Include(x => x.FileDatas)
                 .Where(x => x.FileDatas.First().ExcelFileId == fileID)
                 .ToListAsync();
@@ -41,7 +41,7 @@ namespace CoreExcelFileUploadAndRead.Services
 
         public async Task<List<BalanceAccount>> LoadFileBalanceAccountsAsync(int fileID)
         {
-            List<BalanceAccount> balanceAccounts = await databaseContext.BalanceAccounts
+            List<BalanceAccount> balanceAccounts = await _databaseContext.BalanceAccounts
                 .Include(x => x.FileData)
                 .Where(x => x.FileData.ExcelFileId == fileID)
                 .OrderBy(x => x.Number)

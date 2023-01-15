@@ -8,18 +8,18 @@ namespace CoreExcelFileUploadAndRead.Services
 {
     public class ExcelFileUploader
     {
-        private DatabaseContext databaseContext;
-        private IMapper mapper;
+        private readonly DatabaseContext _databaseContext;
+        private readonly IMapper _mapper;
 
         public ExcelFileUploader(DatabaseContext databaseContext, IMapper mapper)
         {
-            this.databaseContext = databaseContext;
-            this.mapper = mapper;
+            _databaseContext = databaseContext;
+            _mapper = mapper;
         }
 
         public async Task<List<ExcelFile>> LoadUploadedFilesListAsync()
         {
-            return await databaseContext.Files.ToListAsync();
+            return await _databaseContext.Files.ToListAsync();
         }
 
         public async Task<bool> GetExcelFileDataAsync(string fName)
@@ -119,22 +119,22 @@ namespace CoreExcelFileUploadAndRead.Services
 
         public async Task<ExcelFile> AddFileInfoAsync(ExcelFile file)
         {
-            databaseContext.Files.Add(file);
-            await databaseContext.SaveChangesAsync();
+            _databaseContext.Files.Add(file);
+            await _databaseContext.SaveChangesAsync();
 
             return file;
         }
 
         public async Task AddClassGroupAsync(IExcelDataReader reader, int currentFileID)
         {
-            ClassGroup classGroup = mapper.Map<ClassGroup>(reader);
+            ClassGroup classGroup = _mapper.Map<ClassGroup>(reader);
 
-            databaseContext.ClassGroups.Add(classGroup);
-            await databaseContext.SaveChangesAsync();
+            _databaseContext.ClassGroups.Add(classGroup);
+            await _databaseContext.SaveChangesAsync();
 
             string classGroupNum = classGroup.Number.ToString();
 
-            await databaseContext.FileDatas
+            await _databaseContext.FileDatas
                 .Include(x => x.BalanceAccount)
                 .Where(x => x.BalanceAccount.Number.ToString().Substring(0, 2) == classGroupNum
                     && x.ExcelFile.Id == currentFileID)
@@ -142,24 +142,24 @@ namespace CoreExcelFileUploadAndRead.Services
                     value.ClassGroup = classGroup;
                 });
 
-            await databaseContext.SaveChangesAsync();
+            await _databaseContext.SaveChangesAsync();
         }
 
         public async Task<Class> AddClassAsync(IExcelDataReader reader)
         {
-            Class cls = mapper.Map<Class>(reader);
+            Class cls = _mapper.Map<Class>(reader);
 
-            databaseContext.Classes.Add(cls);
-            await databaseContext.SaveChangesAsync();
+            _databaseContext.Classes.Add(cls);
+            await _databaseContext.SaveChangesAsync();
 
             return cls;
         }
 
         public async Task UpdateClassValuesAsync(IExcelDataReader reader, int currentClassID)
         {
-            Class updatedCls = mapper.Map<Class>(reader);
+            Class updatedCls = _mapper.Map<Class>(reader);
 
-            Class cls = await databaseContext.Classes.FindAsync(currentClassID);
+            Class cls = await _databaseContext.Classes.FindAsync(currentClassID);
             cls.OpeningBalanceActive = updatedCls.OpeningBalanceActive;
             cls.OpeningBalancePassive = updatedCls.OpeningBalancePassive;
             cls.TurnoverDebit = updatedCls.TurnoverDebit;
@@ -167,14 +167,14 @@ namespace CoreExcelFileUploadAndRead.Services
             cls.ClosingBalanceActive = updatedCls.ClosingBalanceActive;
             cls.ClosingBalancePassive = updatedCls.ClosingBalancePassive;
 
-            await databaseContext.SaveChangesAsync();
+            await _databaseContext.SaveChangesAsync();
         }
 
         public async Task UpdateFileValuesAsync(IExcelDataReader reader, int currentFileID)
         {
-            ExcelFile updatedFile = mapper.Map<ExcelFile>(reader);
+            ExcelFile updatedFile = _mapper.Map<ExcelFile>(reader);
 
-            ExcelFile file = await databaseContext.Files.FindAsync(currentFileID);
+            ExcelFile file = await _databaseContext.Files.FindAsync(currentFileID);
             file.OpeningBalanceActive = updatedFile.OpeningBalanceActive;
             file.OpeningBalancePassive = updatedFile.OpeningBalancePassive;
             file.TurnoverDebit = updatedFile.TurnoverDebit;
@@ -182,7 +182,7 @@ namespace CoreExcelFileUploadAndRead.Services
             file.ClosingBalanceActive = updatedFile.ClosingBalanceActive;
             file.ClosingBalancePassive = updatedFile.ClosingBalancePassive;
 
-            await databaseContext.SaveChangesAsync();
+            await _databaseContext.SaveChangesAsync();
         }
 
         public async Task AddBalanceAccountValues(IExcelDataReader reader, ExcelFile currentFile, Class currentClass)
@@ -193,14 +193,14 @@ namespace CoreExcelFileUploadAndRead.Services
                 ExcelFile = currentFile
             };
 
-            databaseContext.FileDatas.Add(dataRow);
-            await databaseContext.SaveChangesAsync();
+            _databaseContext.FileDatas.Add(dataRow);
+            await _databaseContext.SaveChangesAsync();
 
-            BalanceAccount balance = mapper.Map<BalanceAccount>(reader);
+            BalanceAccount balance = _mapper.Map<BalanceAccount>(reader);
             balance.FileData = dataRow;
 
-            databaseContext.BalanceAccounts.Add(balance);
-            await databaseContext.SaveChangesAsync();
+            _databaseContext.BalanceAccounts.Add(balance);
+            await _databaseContext.SaveChangesAsync();
         }
     }
 }

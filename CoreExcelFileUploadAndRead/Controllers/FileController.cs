@@ -6,19 +6,19 @@ namespace CoreExcelFileUploadAndRead.Controllers
 {
     public class FileController : Controller
     {
-        private ExcelFileUploader fileUploader; 
+        private readonly ExcelFileUploader _fileUploader; 
 
         private List<ExcelFile> Files { get; set; }
 
         public FileController(ExcelFileUploader fileUploader)
         {
-            this.fileUploader = fileUploader;
+            _fileUploader = fileUploader;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            Files = await fileUploader.LoadUploadedFilesListAsync();
+            Files = await _fileUploader.LoadUploadedFilesListAsync();
 
             return View(Files);
         }
@@ -26,16 +26,23 @@ namespace CoreExcelFileUploadAndRead.Controllers
         [HttpPost]
         public async Task<IActionResult> Index([FromForm] IFormFile file, [FromServices] IWebHostEnvironment hostingEnvironment)
         {
+            string dir = $"{hostingEnvironment.WebRootPath}\\files";
+            if (!Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
+
             try
             {
-                string fileName = $"{hostingEnvironment.WebRootPath}\\files\\{file.FileName}";
+                string fileName = Path.Combine(dir, file.FileName);
+
                 using (FileStream fileStream = System.IO.File.Create(fileName))
                 {
                     file.CopyTo(fileStream);
                     fileStream.Flush();
                 }
 
-                await fileUploader.GetExcelFileDataAsync(file.FileName);
+                await _fileUploader.GetExcelFileDataAsync(file.FileName);
 
                 ViewBag.SuccessMessage = "Added successfully";
             }
@@ -45,7 +52,7 @@ namespace CoreExcelFileUploadAndRead.Controllers
             }
             finally
             {
-                Files = await fileUploader.LoadUploadedFilesListAsync();
+                Files = await _fileUploader.LoadUploadedFilesListAsync();
             }
 
             return View(Files);
