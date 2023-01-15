@@ -69,22 +69,6 @@ namespace CoreExcelFileUploadAndRead.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "FileDatas",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ExcelFileId = table.Column<int>(type: "int", nullable: false),
-                    ClassId = table.Column<int>(type: "int", nullable: false),
-                    ClassGroupId = table.Column<int>(type: "int", nullable: false),
-                    BalanceAccountId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FileDatas", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Files",
                 columns: table => new
                 {
@@ -110,22 +94,80 @@ namespace CoreExcelFileUploadAndRead.Migrations
                 {
                     table.PrimaryKey("PK_Files", x => x.Id);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "FileDatas",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ExcelFileId = table.Column<int>(type: "int", nullable: true),
+                    ClassId = table.Column<int>(type: "int", nullable: true),
+                    ClassGroupId = table.Column<int>(type: "int", nullable: true),
+                    BalanceAccountId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FileDatas", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_FileDatas_BalanceAccounts_BalanceAccountId",
+                        column: x => x.BalanceAccountId,
+                        principalTable: "BalanceAccounts",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_FileDatas_ClassGroups_ClassGroupId",
+                        column: x => x.ClassGroupId,
+                        principalTable: "ClassGroups",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_FileDatas_Classes_ClassId",
+                        column: x => x.ClassId,
+                        principalTable: "Classes",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_FileDatas_Files_ExcelFileId",
+                        column: x => x.ExcelFileId,
+                        principalTable: "Files",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FileDatas_BalanceAccountId",
+                table: "FileDatas",
+                column: "BalanceAccountId",
+                unique: true,
+                filter: "[BalanceAccountId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FileDatas_ClassGroupId",
+                table: "FileDatas",
+                column: "ClassGroupId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FileDatas_ClassId",
+                table: "FileDatas",
+                column: "ClassId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FileDatas_ExcelFileId",
+                table: "FileDatas",
+                column: "ExcelFileId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "BalanceAccounts");
+                name: "FileDatas");
 
             migrationBuilder.DropTable(
-                name: "Classes");
+                name: "BalanceAccounts");
 
             migrationBuilder.DropTable(
                 name: "ClassGroups");
 
             migrationBuilder.DropTable(
-                name: "FileDatas");
+                name: "Classes");
 
             migrationBuilder.DropTable(
                 name: "Files");

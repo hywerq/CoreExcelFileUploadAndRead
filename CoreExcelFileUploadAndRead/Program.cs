@@ -1,6 +1,6 @@
 using CoreExcelFileUploadAndRead.Database;
 using CoreExcelFileUploadAndRead.Mapping;
-using CoreExcelFileUploadAndRead.Models;
+using CoreExcelFileUploadAndRead.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +19,12 @@ builder.Services.AddAutoMapper(typeof(MapProfile));
 
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
+    await context.Database.MigrateAsync();
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

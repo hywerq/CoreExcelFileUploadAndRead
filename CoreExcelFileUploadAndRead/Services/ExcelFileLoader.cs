@@ -1,9 +1,8 @@
-﻿using AutoMapper;
+﻿using CoreExcelFileUploadAndRead.Database;
 using CoreExcelFileUploadAndRead.Database.Entities;
-using CoreExcelFileUploadAndRead.Database;
 using Microsoft.EntityFrameworkCore;
 
-namespace CoreExcelFileUploadAndRead.Models
+namespace CoreExcelFileUploadAndRead.Services
 {
     public class ExcelFileLoader
     {
@@ -14,20 +13,16 @@ namespace CoreExcelFileUploadAndRead.Models
             this.databaseContext = databaseContext;
         }
 
-        public async Task<ExcelFile> LoadFileInfoAsync(int fileID)
+        public async Task<ExcelFile?> LoadFileInfoAsync(int fileID)
         {
-            return await databaseContext.Files.Where(x => x.Id == fileID).FirstAsync();
+            return await databaseContext.Files.FindAsync(fileID);
         }
 
         public async Task<List<Class>> LoadFileClassesAsync(int fileID)
         {
             List<Class> classes = await databaseContext.Classes
-                .Join(
-                    databaseContext.FileDatas,
-                    cls => cls.Id,
-                    fds => fds.ClassId,
-                    (cls, fds) => cls
-                ).Distinct()
+                .Include(x => x.FileDatas)
+                .Where(x => x.FileDatas.First().ExcelFileId == fileID)
                 .OrderBy(x => x.Title)
                 .ToListAsync();
 
@@ -37,13 +32,8 @@ namespace CoreExcelFileUploadAndRead.Models
         public async Task<List<ClassGroup>> LoadFileClassGroupsAsync(int fileID)
         {
             List<ClassGroup> classGroups = await databaseContext.ClassGroups
-                .Join(
-                    databaseContext.FileDatas,
-                    cgs => cgs.Id,
-                    fds => fds.ClassGroupId,
-                    (cgs, fds) => cgs
-                ).Distinct()
-                .OrderBy(x => x.Number)
+                .Include(x => x.FileDatas)
+                .Where(x => x.FileDatas.First().ExcelFileId == fileID)
                 .ToListAsync();
 
             return classGroups;
@@ -52,12 +42,9 @@ namespace CoreExcelFileUploadAndRead.Models
         public async Task<List<BalanceAccount>> LoadFileBalanceAccountsAsync(int fileID)
         {
             List<BalanceAccount> balanceAccounts = await databaseContext.BalanceAccounts
-                .Join(
-                    databaseContext.FileDatas,
-                    bas => bas.Id,
-                    fds => fds.BalanceAccountId,
-                    (bas, fds) => bas
-                ).OrderBy(x => x.Number)
+                .Include(x => x.FileData)
+                .Where(x => x.FileData.ExcelFileId == fileID)
+                .OrderBy(x => x.Number)
                 .ToListAsync();
 
             return balanceAccounts;

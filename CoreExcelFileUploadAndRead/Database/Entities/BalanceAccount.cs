@@ -10,6 +10,7 @@
         public decimal TurnoverCredit { get; set; }
         public decimal ClosingBalanceActive { get; set; }
         public decimal ClosingBalancePassive { get; set; }
-        //public FileData Data { get; set; } = new();
+
+        public FileData FileData { get; set; } = new();
     }
 }
