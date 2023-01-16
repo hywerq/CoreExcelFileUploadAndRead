@@ -17,11 +17,13 @@ namespace CoreExcelFileUploadAndRead.Services
             _mapper = mapper;
         }
 
+        //getting all uploaded files from the db
         public async Task<List<ExcelFile>> LoadUploadedFilesListAsync()
         {
             return await _databaseContext.Files.ToListAsync();
         }
 
+        //reading file line by line
         public async Task<bool> GetExcelFileDataAsync(string fName)
         {
             string fileName = $"{Directory.GetCurrentDirectory()}{@"\wwwroot\files"}" + "\\" + fName;
@@ -31,12 +33,14 @@ namespace CoreExcelFileUploadAndRead.Services
             {
                 using (IExcelDataReader reader = ExcelReaderFactory.CreateReader(stream))
                 {
+                    //reading and uploading file info including its header
                     ExcelFile file = GetExcelReportInfo(reader, fName);
                     ExcelFile currentFile = await AddFileInfoAsync(file);
-                    Class currentClass = new Class();
+                    FileClass currentClass = new FileClass();
 
                     while (reader.Read())
                     {
+                        //if line first cell is empty - skip 
                         if (reader.GetValue(0) == null)
                         {
                             continue;
@@ -44,6 +48,7 @@ namespace CoreExcelFileUploadAndRead.Services
 
                         string rowFirstValue = reader.GetValue(0).ToString();
 
+                        //identifying row type by its first cell content value
                         if (rowFirstValue.Length != 4)
                         {
                             if (rowFirstValue.Length == 2)
@@ -74,6 +79,7 @@ namespace CoreExcelFileUploadAndRead.Services
             return true;
         }
 
+        //reading file header by template
         public ExcelFile GetExcelReportInfo(IExcelDataReader reader, string fileName)
         {
             ExcelFile fileInfo = new ExcelFile();
@@ -125,6 +131,7 @@ namespace CoreExcelFileUploadAndRead.Services
             return file;
         }
 
+        //adding new class group and updating fields that are included in this group
         public async Task AddClassGroupAsync(IExcelDataReader reader, int currentFileID)
         {
             ClassGroup classGroup = _mapper.Map<ClassGroup>(reader);
@@ -145,9 +152,9 @@ namespace CoreExcelFileUploadAndRead.Services
             await _databaseContext.SaveChangesAsync();
         }
 
-        public async Task<Class> AddClassAsync(IExcelDataReader reader)
+        public async Task<FileClass> AddClassAsync(IExcelDataReader reader)
         {
-            Class cls = _mapper.Map<Class>(reader);
+            FileClass cls = _mapper.Map<FileClass>(reader);
 
             _databaseContext.Classes.Add(cls);
             await _databaseContext.SaveChangesAsync();
@@ -157,9 +164,9 @@ namespace CoreExcelFileUploadAndRead.Services
 
         public async Task UpdateClassValuesAsync(IExcelDataReader reader, int currentClassID)
         {
-            Class updatedCls = _mapper.Map<Class>(reader);
+            FileClass updatedCls = _mapper.Map<FileClass>(reader);
 
-            Class cls = await _databaseContext.Classes.FindAsync(currentClassID);
+            FileClass cls = await _databaseContext.Classes.FindAsync(currentClassID);
             cls.OpeningBalanceActive = updatedCls.OpeningBalanceActive;
             cls.OpeningBalancePassive = updatedCls.OpeningBalancePassive;
             cls.TurnoverDebit = updatedCls.TurnoverDebit;
@@ -185,7 +192,7 @@ namespace CoreExcelFileUploadAndRead.Services
             await _databaseContext.SaveChangesAsync();
         }
 
-        public async Task AddBalanceAccountValues(IExcelDataReader reader, ExcelFile currentFile, Class currentClass)
+        public async Task AddBalanceAccountValues(IExcelDataReader reader, ExcelFile currentFile, FileClass currentClass)
         {
             FileData dataRow = new FileData()
             {

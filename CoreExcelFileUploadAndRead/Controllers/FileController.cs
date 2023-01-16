@@ -26,16 +26,17 @@ namespace CoreExcelFileUploadAndRead.Controllers
         [HttpPost]
         public async Task<IActionResult> Index([FromForm] IFormFile file, [FromServices] IWebHostEnvironment hostingEnvironment)
         {
+            //creating folder for files if it doesn't exist
             string dir = $"{hostingEnvironment.WebRootPath}\\files";
             if (!Directory.Exists(dir))
             {
                 Directory.CreateDirectory(dir);
             }
 
+            //copying the file to the server, reading it and importing it into the database
             try
             {
                 string fileName = Path.Combine(dir, file.FileName);
-
                 using (FileStream fileStream = System.IO.File.Create(fileName))
                 {
                     file.CopyTo(fileStream);

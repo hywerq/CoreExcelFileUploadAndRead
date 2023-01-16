@@ -16,7 +16,7 @@ namespace CoreExcelFileUploadAndRead.Database
         }
 
         public DbSet<ExcelFile> Files { get; set; }
-        public DbSet<Class> Classes { get; set; }
+        public DbSet<FileClass> Classes { get; set; }
         public DbSet<ClassGroup> ClassGroups { get; set; }
         public DbSet<BalanceAccount> BalanceAccounts { get; set; }
         public DbSet<FileData> FileDatas { get; set; }
@@ -36,7 +36,7 @@ namespace CoreExcelFileUploadAndRead.Database
                 entity.Property(x => x.ClosingBalancePassive).HasColumnType("decimal(18,2)");
             });
 
-            modelBuilder.Entity<Class>(entity =>
+            modelBuilder.Entity<FileClass>(entity =>
             {
                 entity.Property(x => x.OpeningBalanceActive).HasColumnType("decimal(18,2)");
                 entity.Property(x => x.OpeningBalancePassive).HasColumnType("decimal(18,2)");

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CoreExcelFileUploadAndRead.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230115231453_InitMigration")]
+    [Migration("20230116000729_InitMigration")]
     partial class InitMigration
     {
         /// <inheritdoc />
@@ -57,41 +57,6 @@ namespace CoreExcelFileUploadAndRead.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("BalanceAccounts");
-                });
-
-            modelBuilder.Entity("CoreExcelFileUploadAndRead.Database.Entities.Class", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("ClosingBalanceActive")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("ClosingBalancePassive")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("OpeningBalanceActive")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("OpeningBalancePassive")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("TurnoverCredit")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("TurnoverDebit")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Classes");
                 });
 
             modelBuilder.Entity("CoreExcelFileUploadAndRead.Database.Entities.ClassGroup", b =>
@@ -193,6 +158,41 @@ namespace CoreExcelFileUploadAndRead.Migrations
                     b.ToTable("Files");
                 });
 
+            modelBuilder.Entity("CoreExcelFileUploadAndRead.Database.Entities.FileClass", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("ClosingBalanceActive")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("ClosingBalancePassive")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("OpeningBalanceActive")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("OpeningBalancePassive")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("TurnoverCredit")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("TurnoverDebit")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Classes");
+                });
+
             modelBuilder.Entity("CoreExcelFileUploadAndRead.Database.Entities.FileData", b =>
                 {
                     b.Property<int>("Id")
@@ -238,7 +238,7 @@ namespace CoreExcelFileUploadAndRead.Migrations
                         .WithMany("FileDatas")
                         .HasForeignKey("ClassGroupId");
 
-                    b.HasOne("CoreExcelFileUploadAndRead.Database.Entities.Class", "Class")
+                    b.HasOne("CoreExcelFileUploadAndRead.Database.Entities.FileClass", "Class")
                         .WithMany("FileDatas")
                         .HasForeignKey("ClassId");
 
@@ -261,17 +261,17 @@ namespace CoreExcelFileUploadAndRead.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("CoreExcelFileUploadAndRead.Database.Entities.Class", b =>
-                {
-                    b.Navigation("FileDatas");
-                });
-
             modelBuilder.Entity("CoreExcelFileUploadAndRead.Database.Entities.ClassGroup", b =>
                 {
                     b.Navigation("FileDatas");
                 });
 
             modelBuilder.Entity("CoreExcelFileUploadAndRead.Database.Entities.ExcelFile", b =>
+                {
+                    b.Navigation("FileDatas");
+                });
+
+            modelBuilder.Entity("CoreExcelFileUploadAndRead.Database.Entities.FileClass", b =>
                 {
                     b.Navigation("FileDatas");
                 });

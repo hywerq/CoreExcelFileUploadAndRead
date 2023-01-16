@@ -16,7 +16,7 @@ namespace CoreExcelFileUploadAndRead.Mapping
 				.ForMember(dest => dest.ClosingBalanceActive, x => x.MapFrom(src => (decimal)src.GetDouble(5)))
 				.ForMember(dest => dest.ClosingBalancePassive, x => x.MapFrom(src => (decimal)src.GetDouble(6)));
 			
-			CreateMap<IExcelDataReader, Class>()
+			CreateMap<IExcelDataReader, FileClass>()
 				.ForMember(dest => dest.Title, x => x.MapFrom(src => src.GetString(0)))
 				.ForMember(dest => dest.OpeningBalanceActive, x => x.MapFrom(src => (decimal)src.GetDouble(1)))
 				.ForMember(dest => dest.OpeningBalancePassive, x => x.MapFrom(src => (decimal)src.GetDouble(2)))

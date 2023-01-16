@@ -1,6 +1,6 @@
 ﻿namespace CoreExcelFileUploadAndRead.Database.Entities
 {
-    public class Class
+    public class FileClass
     {
         public int Id { get; set; }
         public string Title { get; set; } = "";

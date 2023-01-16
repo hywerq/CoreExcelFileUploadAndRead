@@ -18,9 +18,9 @@ namespace CoreExcelFileUploadAndRead.Services
             return await _databaseContext.Files.FindAsync(fileID);
         }
 
-        public async Task<List<Class>> LoadFileClassesAsync(int fileID)
+        public async Task<List<FileClass>> LoadFileClassesAsync(int fileID)
         {
-            List<Class> classes = await _databaseContext.Classes
+            List<FileClass> classes = await _databaseContext.Classes
                 .Include(x => x.FileDatas)
                 .Where(x => x.FileDatas.First().ExcelFileId == fileID)
                 .OrderBy(x => x.Title)
